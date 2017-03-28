@@ -9,6 +9,7 @@ session_start();
 //getField
 function getFieldFromForm($nom)
 {
+    var_dump($_POST[$nom]);
     return isset($_POST[$nom]) ? $_POST[$nom] : (isset($_GET[$nom]) ? $_GET[$nom] : null);
 }
 
@@ -59,8 +60,8 @@ switch ($action) {
 
     case "inscription" :
         $res = inscriptionDresseur();
-
-        header("Location:" . $res["url"]);
+        if(!$res["error"])
+            header("Location:index.php?page=pokemon");
 
         break;
 
@@ -73,7 +74,6 @@ switch ($action) {
 
     case "deconnexion" :
         deconnexion();
-        header("Location:index.php?page=home");
         break;
 }
 

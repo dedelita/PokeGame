@@ -27,7 +27,7 @@ function inscriptionDresseur()
             $sql->bindValue(':nbPieces', 5000, PDO::PARAM_INT);
             $sql->fetch();
 
-            if ($sql->execute()) { //inscription OK => connexion et ajout de son 1e pokémon
+            if ($sql->execute()) { //inscription OK => connexion avec ajout de son 1e pokémon
                 connexion(true);
             } else {
                 $rep["erreur"] = "Une erreur est survenue lors de l'ajout du nouveau dresseur à la base de données";
@@ -63,7 +63,7 @@ function getDresseurByEmail($email)
 }
 
 //connexion
-function connexion($inscription = false)
+function connexion($add_pokemon = false)
 {
     $login = getFieldFromForm("nom");
     $password = getFieldFromForm("password");
@@ -76,8 +76,8 @@ function connexion($inscription = false)
         if ($dresseur && $dresseur["password"] == sha1($password)) {
             $_SESSION["dresseur"] = serialize(new Dresseur($dresseur["id"], $dresseur["nom"], $dresseur["nbPieces"]));
 
-            if ($inscription) {
-                addPokemon($dresseur["id"], getIdEspeceOfPokemon(getFieldFromForm("pokemon")), getRandomSexe(), 0, 0);
+            if ($add_pokemon) {
+                addPokemon($dresseur["id"], getIdEspeceOfPokemon(getFieldFromForm("pokemon")), 0, 0);
             }
 
             $rep["succes"] = true;
@@ -94,5 +94,5 @@ function connexion($inscription = false)
 function deconnexion()
 {
     session_destroy();
-    header("Location:index.php");
+    header("Location:index.php?page=home");
 }

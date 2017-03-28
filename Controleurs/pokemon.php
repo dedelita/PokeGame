@@ -17,7 +17,8 @@ function getRandomSexe()
 }
 
 //add
-function addPokemon($id_dresseur, $id_espece, $sexe, $xp, $niveau)
+//NE MARCHE PAS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :'(
+function addPokemon($id_dresseur, $id_espece, $xp, $niveau)
 {
     $dbh = connexionSQL();
 
@@ -25,7 +26,7 @@ function addPokemon($id_dresseur, $id_espece, $sexe, $xp, $niveau)
     $sql = $dbh->prepare($query);
     $sql->bindValue(':id_dresseur', $id_dresseur, PDO::PARAM_INT);
     $sql->bindValue(':id_espece', $id_espece, PDO::PARAM_INT);
-    $sql->bindValue(':sexe', $sexe, PDO::PARAM_INT);
+    $sql->bindValue(':sexe', getRandomSexe(), PDO::PARAM_INT);
     $sql->bindValue(':XP', $xp, PDO::PARAM_INT);
     $sql->bindValue(':niveau', $niveau, PDO::PARAM_INT);
     $sql->execute();
