@@ -48,16 +48,13 @@ switch ($action) {
         break;
 
     case "connexion" :
-        $login = getFieldFromForm("login");
-        $password = getFieldFromForm("password");
-
-        $res = connexion($login, $password);
+        $res = connexion();
         if ($res["succes"] && !$res["pokemom"]) {
-            header("Location:index.php?page=pokemon");
-        } elseif($res["succes"] && $res["pokemom"]) {
-            $dresseur = unserialize($_SESSION["dresseur"]);
-            addPokemon($dresseur->getId(), getIdEspeceOfPokemon($res["pokemom"]), getRandomSexe(), 0, 0);
+            $url = "index.php?page=pokemon";
+        } else {
+            $url = "index.php?page=home";
         }
+        header("Location:" . $url);
         break;
 
     case "inscription" :

@@ -1,5 +1,5 @@
 <form action="index.php?action=connexion" method="POST">
-    Login : <input type="text" name="login">
+    Login : <input type="text" name="nom">
     <br>
     Password : <input type="password" name="password">
     <br>
