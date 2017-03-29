@@ -1,6 +1,7 @@
 <?php
 include_once "Entitees/Dresseur.php";
 include_once "Controleurs/connexionSQL.php";
+include_once "Controleurs/user.php";
 include_once "Controleurs/dresseur.php";
 include_once "Controleurs/pokemon.php";
 
@@ -9,7 +10,6 @@ session_start();
 //getField
 function getFieldFromForm($nom)
 {
-    var_dump($_POST[$nom]);
     return isset($_POST[$nom]) ? $_POST[$nom] : (isset($_GET[$nom]) ? $_GET[$nom] : null);
 }
 
@@ -32,11 +32,13 @@ function getArrayFieldFromForm($nom)
 
 <?php
 $page = getFieldFromForm("page");
-include "menu.php";
-
 if (!$page)
     $page = "home";
+
+include "menu.php";
+
 include "Pages/" . $page . ".php";
+
 $action = getFieldFromForm("action");
 
 switch ($action) {
@@ -50,19 +52,24 @@ switch ($action) {
 
     case "connexion" :
         $res = connexion();
+        
         if ($res["succes"] && !$res["pokemom"]) {
             $url = "index.php?page=pokemon";
         } else {
             $url = "index.php?page=home";
+            echo $res["error"];
         }
         header("Location:" . $url);
         break;
 
     case "inscription" :
         $res = inscriptionDresseur();
-        if(!$res["error"])
-            header("Location:index.php?page=pokemon");
 
+        if (!$res["error"])
+            header("Location:index.php?page=pokemon");
+        else {
+            echo $res["error"];
+        }
         break;
 
     case "statistiques" :

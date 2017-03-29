@@ -1,98 +1,37 @@
 <?php
 
-//inscription
 function inscriptionDresseur()
 {
-    $nom = getFieldFromForm("nom");
-    $email = getFieldFromForm("email");
-    $password = getFieldFromForm("password");
-    $conf_password = getFieldFromForm("conf_password");
+    $rep = inscription();
 
-    $dbh = connexionSQL();
+    $id = getUserId(getFieldFromForm("login"));
 
-    $rep = array("erreur" => null);
-
-    if (getDresseurByNom($nom)) {
-        $rep["erreur"] = "Un dresseur du nom de " . $nom . " existe déjà !";
+    if (!$rep["succes"] && !$rep["error"]) {
+        $rep["error"] = "Une erreur est survenue lors de l'ajout à la base de données";
     } else {
-        if (getDresseurByEmail($email)) {
-            $rep["erreur"] = "Un dresseur est déjà inscrit avec cet email !";
-        } elseif ($password == $conf_password) {
-            $query = "INSERT INTO dresseur (nom, email, password, nbPieces) VALUES (:nom, :email, :password, :nbPieces);";
+        $query = "INSERT INTO dresseur (id, nbPieces) VALUES (:id, :nbPieces);";
+        $sql = $rep["dbh"]->prepare($query);
+        $sql->bindValue(':id', $id, PDO::PARAM_INT);
+        $sql->bindValue(':nbPieces', 5000, PDO::PARAM_INT);
 
-            $sql = $dbh->prepare($query);
-            $sql->bindValue(':nom', $nom, PDO::PARAM_STR);
-            $sql->bindValue(':email', $email, PDO::PARAM_STR);
-            $sql->bindValue(':password', sha1($password), PDO::PARAM_STR);
-            $sql->bindValue(':nbPieces', 5000, PDO::PARAM_INT);
-            $sql->fetch();
-
-            if ($sql->execute()) { //inscription OK => connexion avec ajout de son 1e pokémon
-                connexion(true);
-            } else {
-                $rep["erreur"] = "Une erreur est survenue lors de l'ajout du nouveau dresseur à la base de données";
-            }
+        if ($sql->execute()) {
+            addPokemon($id, getIdEspeceOfPokemon(getFieldFromForm("pokemon")), 0, 0);
         }
+
+
     }
 
     return $rep;
 }
 
-function getDresseurByNom($nom)
+function getInfosDresseur($id)
 {
     $dbh = connexionSQL();
 
-    $query = "SELECT * FROM dresseur WHERE nom = :nom;";
+    $query = "SELECT nbPieces FROM dresseur WHERE id = :id;";
     $sql = $dbh->prepare($query);
-    $sql->bindValue(':nom', $nom, PDO::PARAM_STR);
+    $sql->bindValue(':id', $id, PDO::PARAM_INT);
     $sql->execute();
 
     return $sql->fetch();
-}
-
-function getDresseurByEmail($email)
-{
-    $dbh = connexionSQL();
-
-    $query = "SELECT * FROM dresseur WHERE email = :email;";
-    $sql = $dbh->prepare($query);
-    $sql->bindValue(':email', $email, PDO::PARAM_STR);
-    $sql->execute();
-
-    return $sql->fetch();
-}
-
-//connexion
-function connexion($add_pokemon = false)
-{
-    $login = getFieldFromForm("nom");
-    $password = getFieldFromForm("password");
-
-    $rep = array("erreur" => null);
-
-    if (!isset($_SESSION["dresseur"]) && $login && $password) {
-        $dresseur = getDresseurByNom($login);
-
-        if ($dresseur && $dresseur["password"] == sha1($password)) {
-            $_SESSION["dresseur"] = serialize(new Dresseur($dresseur["id"], $dresseur["nom"], $dresseur["nbPieces"]));
-
-            if ($add_pokemon) {
-                addPokemon($dresseur["id"], getIdEspeceOfPokemon(getFieldFromForm("pokemon")), 0, 0);
-            }
-
-            $rep["succes"] = true;
-        } else {
-            $rep["succes"] = false;
-            $rep["erreur"] = "Login ou Mot de passe incorrect !";
-        }
-    }
-
-    return $rep;
-}
-
-//deconnexion
-function deconnexion()
-{
-    session_destroy();
-    header("Location:index.php?page=home");
 }

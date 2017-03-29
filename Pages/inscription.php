@@ -1,7 +1,7 @@
 <h1>Devenez Dresseur dès maintenant !</h1>
 
 <form action="index.php?action=inscription" method="POST">
-    Nom / Login : <input type="text" name="nom" required>
+    Nom / Login : <input type="text" name="login" required>
     <br>
     Mail : <input type="email" name="email" required>
     <br>

@@ -17,7 +17,6 @@ function getRandomSexe()
 }
 
 //add
-//NE MARCHE PAS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! :'(
 function addPokemon($id_dresseur, $id_espece, $xp, $niveau)
 {
     $dbh = connexionSQL();
