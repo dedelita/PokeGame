@@ -51,8 +51,14 @@ function getPokemons($id)
     $sql = $dbh->prepare("SELECT * FROM pokemon WHERE id_dresseur = :id_dresseur;");
     $sql->bindValue(':id_dresseur', $id, PDO::PARAM_INT);
     $sql->execute();
-    $pokemons = $sql->fetchAll();
+    $poks = $sql->fetchAll();
 
+    $pokemons = array();
+    foreach ($poks as $po) {
+        $infos_espece = getInfosEspece($po["id_espece"]);
+        $pokemons[] = serialize(new Pokemon($po["id"], $infos_espece["nom"], $infos_espece["evolution"], $po["sexe"], $po["XP"], $po["niveau"], $po["prix_vente"]));
+    }
+    
     return $pokemons;
 }
 
@@ -68,6 +74,17 @@ function getPokemonByName($nom)
     $pokemon = $sql->fetch();
 
     return $pokemon;
+}
+
+function getInfosEspece($id) {
+    $dbh = connexionSQL();
+
+    $query = "SELECT * FROM espece_pokemon WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':id', $id, PDO::PARAM_INT);
+    $sql->execute();
+
+    return $sql->fetch();
 }
 
 //Statistiques

@@ -43,8 +43,7 @@ function connexion()
         $user = getUserByLogin($login);
 
         if ($user && $user["password"] == sha1($password)) {
-            $dresseur = getInfosDresseur($user["id"]);
-            $_SESSION["dresseur"] = serialize(new Dresseur($user["id"], $user["login"], $dresseur["nbPieces"]));
+            $rep["user"] = $user;
             $rep["succes"] = true;
         } else {
             $rep["succes"] = false;
@@ -95,6 +94,6 @@ function getUserId($login)
     $sql = $dbh->prepare($query);
     $sql->bindValue(':login', $login);
     $sql->execute();
-    
+
     return $sql->fetch();
 }

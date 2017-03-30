@@ -24,6 +24,26 @@ function inscriptionDresseur()
     return $rep;
 }
 
+function connexionDresseur()
+{
+    $rep = connexion();
+
+    if ($rep["succes"]) {
+        $user = $rep["user"];
+
+        $_SESSION["dresseur"] = serialize(new Dresseur($user["id"], $user["login"], getInfosDresseur($user["id"])));
+        $_SESSION["dresseur"]["pokémons"] = getPokemons($user["id"]);
+
+        $url = "index.php?page=pokemon";
+
+    } else {
+        $url = "index.php?page=home";
+        echo $rep["error"];
+    }
+
+    header("Location:" . $url);
+}
+
 function getInfosDresseur($id)
 {
     $dbh = connexionSQL();
@@ -33,5 +53,5 @@ function getInfosDresseur($id)
     $sql->bindValue(':id', $id, PDO::PARAM_INT);
     $sql->execute();
 
-    return $sql->fetch();
+    return $sql->fetch()["nbPieces"];
 }

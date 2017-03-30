@@ -51,15 +51,7 @@ switch ($action) {
         break;
 
     case "connexion" :
-        $res = connexion();
-        
-        if ($res["succes"] && !$res["pokemom"]) {
-            $url = "index.php?page=pokemon";
-        } else {
-            $url = "index.php?page=home";
-            echo $res["error"];
-        }
-        header("Location:" . $url);
+        connexionDresseur();
         break;
 
     case "inscription" :
