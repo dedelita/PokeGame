@@ -1,27 +1,30 @@
-<h1><?php echo $_GET["pokemon"]; ?></h1>
-
 <?php
+$nom = getFieldFromForm("pokemon");
 
-$pokemon = getPokemonByName($_GET["pokemon"]);
+$pokemon = getPokemonByName($nom);
 
-$types = getTypesOfPokemon($pokemon["id"]);
+echo "<h1>$nom</h1>
+    
+    <a href='index.php?page=detail&action=entrainer&pokemon=$nom'>Entraîner</a>
+    <a href='index.php?page=detail&action=mettre_en_vente&pokemon=$nom'>Mettre en vente</a>
+    
+    <p>{$pokemon->getEvolution()}</p>
 
-if(!isset($pokemon)) {
-    echo "<p>Erreur : Ce pokémon n'est pas enregistré dans la pokédex !</p>";
-} else {
-    if($pokemon["evolution"] == false) {
-        echo "<p>Pokémon de base</p>";
-    } else {
-        echo "<p>Pokémon d'évolution</p>";
-    }
+    <p>Numéro : {$pokemon->getNumero()}</p>
+    
+    <p>Sexe : {$pokemon->getSexe()}</p>
 
-    echo "<p>Numéro : {$pokemon["id"]}</p>" .
-         "<p>Ces types : </p>
-         <ul>";
+    <p>Ces types :</p>
+    
+    <ul>";
 
-     foreach($types as $type) {
-        echo "<li>$type[nom]</li>";
-    }
-
-    echo "</ul>";
+foreach ($pokemon->getTypes() as $type) {
+    echo "<li>$type</li>";
 }
+
+echo "</ul>
+    <p>XP : {$pokemon->getXp()}</p>
+    <p>Niveau : {$pokemon->getNiveau()}</p>";
+
+?>
+

@@ -3,32 +3,41 @@
 class Pokemon
 {
     private $id;
+    private $numero;
     private $nom;
     private $evolution;
     private $sexe;
     private $xp;
     private $niveau;
     private $prix_vente;
+    private $types;
+    private $enVente;
 
     /**
      * Pokemon constructor.
      * @param $id
+     * @param $numero
      * @param $nom
      * @param $evolution
      * @param $sexe
      * @param $xp
      * @param $niveau
      * @param $prix_vente
+     * @param $en_vente
+     * @param $types
      */
-    public function __construct($id, $nom, $evolution, $sexe, $xp, $niveau, $prix_vente)
+    public function __construct($id, $numero, $nom, $evolution, $sexe, $xp, $niveau, $prix_vente, $en_vente, $types)
     {
         $this->id = $id;
+        $this->numero = $numero;
         $this->nom = $nom;
         $this->evolution = $evolution;
         $this->sexe = $sexe;
         $this->xp = $xp;
         $this->niveau = $niveau;
         $this->prix_vente = $prix_vente;
+        $this->enVente = $en_vente;
+        $this->types = $types;
     }
 
     /**
@@ -45,6 +54,22 @@ class Pokemon
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * @param mixed $numero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
     }
 
     /**
@@ -141,6 +166,38 @@ class Pokemon
     public function setPrixVente($prix_vente)
     {
         $this->prix_vente = $prix_vente;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTypes()
+    {
+        return $this->types;
+    }
+
+    /**
+     * @param mixed $types
+     */
+    public function setTypes($types)
+    {
+        $this->types = $types;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEnVente()
+    {
+        return $this->enVente;
+    }
+
+    /**
+     * @param mixed $enVente
+     */
+    public function setEnVente($enVente)
+    {
+        $this->enVente = $enVente;
     }
     
 }

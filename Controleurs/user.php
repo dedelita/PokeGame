@@ -36,7 +36,6 @@ function connexion()
 {
     $login = getFieldFromForm("login");
     $password = getFieldFromForm("password");
-
     $rep = array("erreur" => null);
 
     if (!isset($_SESSION["dresseur"]) && $login && $password) {
@@ -58,7 +57,6 @@ function connexion()
 function deconnexion()
 {
     session_destroy();
-    header("Location:index.php");
 }
 
 function getUserByLogin($login)
@@ -95,5 +93,5 @@ function getUserId($login)
     $sql->bindValue(':login', $login);
     $sql->execute();
 
-    return $sql->fetch();
+    return (int)$sql->fetch()["id"];
 }

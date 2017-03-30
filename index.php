@@ -1,9 +1,11 @@
 <?php
 include_once "Entitees/Dresseur.php";
+include_once "Entitees/Pokemon.php";
 include_once "Controleurs/connexionSQL.php";
 include_once "Controleurs/user.php";
 include_once "Controleurs/dresseur.php";
 include_once "Controleurs/pokemon.php";
+include_once "Controleurs/espece_pokemon.php";
 
 session_start();
 
@@ -31,6 +33,8 @@ function getArrayFieldFromForm($nom)
 <h1>PokéGame</h1>
 
 <?php
+$error = getFieldFromForm("error");
+
 $page = getFieldFromForm("page");
 if (!$page)
     $page = "home";
@@ -55,27 +59,21 @@ switch ($action) {
         break;
 
     case "inscription" :
-        $res = inscriptionDresseur();
-
-        if (!$res["error"])
-            header("Location:index.php?page=pokemon");
-        else {
-            echo $res["error"];
-        }
+        inscriptionDresseur();
         break;
 
-    case "statistiques" :
-        $nbPokemons = getNbPokemons($_SESSION["dresseur"]->getId());
-        $nbBases = getNbByEvolution("n");
-        $nbEvols = getNbByEvolution("o");
+    case "entrainer" :
+        entrainerPokemon();
+        break;
 
+    case "mettre_en_vente" :
+        mettreEnVentePokemon();
         break;
 
     case "deconnexion" :
-        deconnexion();
+        deconnexionDresseur();
         break;
 }
-
 ?>
 
 </body>
