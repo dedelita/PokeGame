@@ -112,8 +112,8 @@ function acheterPokemon($idPokemon, $prix)
 
         $query = "UPDATE dresseur SET nbPieces = nbPieces - :prix WHERE id = :id";
         $sql = $dbh->prepare($query);
-        $sql->bindValue(':prix', $prix);
-        $sql->bindValue(':id', getIdDresseur());
+        $sql->bindValue(':prix', $prix, PDO::PARAM_INT);
+        $sql->bindValue(':id', getIdDresseur(), PDO::PARAM_INT);
         $sql->execute();
 
         $d = getDresseur();
@@ -124,7 +124,6 @@ function acheterPokemon($idPokemon, $prix)
 
         acheterParDresseur($idPokemon, getIdDresseur());
     }
-
 }
 
 function getDresseurById($id)
@@ -133,7 +132,7 @@ function getDresseurById($id)
 
     $query = "SELECT * FROM dresseur WHERE id = :id";
     $sql = $dbh->prepare($query);
-    $sql->bindValue(':id', $id);
+    $sql->bindValue(':id', $id, PDO::PARAM_INT);
     $sql->execute();
 
     return $sql->fetch();
@@ -145,7 +144,7 @@ function recevoirPieces($idDresseur, $pieces)
 
     $query = "UPDATE dresseur SET nbPieces = nbPieces + :pieces WHERE id = :id";
     $sql = $dbh->prepare($query);
-    $sql->bindValue(':pieces', $pieces);
-    $sql->bindValue(':id', $idDresseur);
+    $sql->bindValue(':pieces', $pieces, PDO::PARAM_INT);
+    $sql->bindValue(':id', $idDresseur, PDO::PARAM_INT);
     $sql->execute();
 }

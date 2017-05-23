@@ -20,7 +20,9 @@ function getAnnonces()
 
 function acheterAnnonce($idVendeur, $idPokemon, $prix)
 {
-    acheterPokemon($idPokemon, $prix);
-    recevoirPieces($idVendeur, $prix);
-    acheterParDresseur($idPokemon, getIdDresseur());
+    if($idVendeur != getIdDresseur()) {
+        acheterPokemon($idPokemon, $prix);
+        recevoirPieces($idVendeur, $prix);
+        acheterParDresseur($idPokemon, getIdDresseur());
+    }
 }

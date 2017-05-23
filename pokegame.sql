@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 16 Mai 2017 à 18:46
+-- Généré le :  Mar 23 Mai 2017 à 13:14
 -- Version du serveur :  5.7.9
 -- Version de PHP :  5.6.15
 
@@ -225,13 +225,14 @@ INSERT INTO `espece_pokemon` (`id`, `nom`, `courbe_XP`, `evolution`, `type1`, `t
 DROP TABLE IF EXISTS `pokemon`;
 CREATE TABLE IF NOT EXISTS `pokemon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_dresseur` int(11) NOT NULL,
-  `id_espece` int(11) NOT NULL,
+  `idDresseur` int(11) NOT NULL,
+  `idEspece` int(11) NOT NULL,
   `sexe` varchar(7) NOT NULL,
   `XP` int(11) NOT NULL,
   `niveau` int(11) NOT NULL,
-  `prix_vente` int(11) DEFAULT NULL,
-  `en_vente` tinyint(1) NOT NULL,
+  `prixVente` int(11) DEFAULT NULL,
+  `enVente` tinyint(1) NOT NULL,
+  `dernierEntrainement` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
@@ -239,10 +240,10 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
 -- Contenu de la table `pokemon`
 --
 
-INSERT INTO `pokemon` (`id`, `id_dresseur`, `id_espece`, `sexe`, `XP`, `niveau`, `prix_vente`, `en_vente`) VALUES
-(6, 1, 4, 'Femelle', 379, 0, NULL, 0),
-(7, 2, 25, 'Femelle', 102, 0, NULL, 0),
-(8, 3, 7, 'Femelle', 39, 0, NULL, 0);
+INSERT INTO `pokemon` (`id`, `idDresseur`, `idEspece`, `sexe`, `XP`, `niveau`, `prixVente`, `enVente`, `dernierEntrainement`) VALUES
+(6, 1, 4, 'Femelle', 450, 0, 99, 0, NULL),
+(7, 2, 25, 'Femelle', 102, 0, NULL, 0, NULL),
+(8, 3, 7, 'Femelle', 39, 0, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
