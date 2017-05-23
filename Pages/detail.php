@@ -64,5 +64,7 @@ $nom = $pokemon->getNom();
         <a href='index.php?page=detail&amp;action=entrainer&amp;pokemon=<?= $id ?>'>Entraîner</a>
         <a href='index.php?page=detail&amp;action=mettre_en_vente&amp;pokemon=<?= $id ?>'>Mettre en vente</a>
     </div>
+<?php } else { ?>
+    <div>Mis en vente</div>
 <?php } ?>
 
