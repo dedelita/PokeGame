@@ -2,6 +2,7 @@
 $id = getFieldFromForm("pokemon");
 
 $pokemon = getPokemonById($id);
+$nom = $pokemon->getNom();
 ?>
 
 <div class="pokemon-detail">
