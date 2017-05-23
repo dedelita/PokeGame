@@ -1,15 +1,31 @@
-<?php
-if ($page == "home") {
-    ?>
-    <a href='index.php?page=home&action=aff_connexion'>Connexion</a>
-    <a href='index.php?page=home&action=aff_inscription'>Inscription</a>
-    <?php
-} else {
-    ?>
-    <ul>
-        <li><a href="index.php?page=pokemon">Mes Pokémons</a></li>
-        <li><a href="index.php?page=annonces">Acheter de nouveaux Pokémons</a></li>
-        <li><a href="index.php?action=deconnexion">Déconnexion</a></li>
-    </ul>
-    <?php
-}
+<header>
+    <div class="wrap">
+        <h1>PokéGame</h1>
+
+        <nav class="user">
+            <?php
+            if ($page == "home") {
+                ?>
+                <a class="signup" href='index.php?page=home&amp;action=aff_inscription'>Inscription</a>
+                <a class="login" href='index.php?page=home&amp;action=aff_connexion'>Connexion</a>
+                <?php
+            } else {
+                ?>
+                <a class="logout" href="index.php?action=deconnexion">Déconnexion</a>
+                <?php
+            }
+            ?>
+        </nav>
+
+        <?php
+        if ($page != "home") {
+            ?>
+            <nav class="pages">
+                <a href="index.php?page=pokemon">Mes Pokémons</a>
+                <a href="index.php?page=annonces">Acheter</a>
+            </nav>
+            <?php
+        }
+        ?>
+    </div>
+</header>
