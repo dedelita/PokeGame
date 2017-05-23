@@ -8,11 +8,12 @@ class Pokemon
     private $evolution;
     private $sexe;
     private $xp;
-    private $courbeXp;
     private $niveau;
     private $prixVente;
-    private $types;
     private $enVente;
+    private $types;
+    private $courbeXp;
+    private $dernierEntrainement;
 
     /**
      * Pokemon constructor.
@@ -22,13 +23,14 @@ class Pokemon
      * @param $evolution
      * @param $sexe
      * @param $xp
-     * @param $courbeXp
      * @param $niveau
      * @param $prixVente
      * @param $enVente
      * @param $types
+     * @param $courbeXp
+     * @param $dernierEntrainement
      */
-    public function __construct($id, $numero, $nom, $evolution, $sexe, $xp, $niveau, $prix_vente, $enVente, $types, $courbeXp)
+    public function __construct($id, $numero, $nom, $evolution, $sexe, $xp, $niveau, $prixVente, $enVente, $types, $courbeXp, $dernierEntrainement)
     {
         $this->id = $id;
         $this->numero = $numero;
@@ -37,11 +39,13 @@ class Pokemon
         $this->sexe = $sexe;
         $this->xp = $xp;
         $this->niveau = $niveau;
-        $this->prix_vente = $prixVente;
+        $this->prixVente = $prixVente;
         $this->enVente = $enVente;
         $this->types = $types;
         $this->courbeXp = $courbeXp;
+        $this->dernierEntrainement = $dernierEntrainement;
     }
+
 
     /**
      * @return mixed
@@ -212,11 +216,29 @@ class Pokemon
     }
 
     /**
-     * @param mixed $xp
+     * @param mixed $courbeXp
      */
     public function setCourbeXp($courbeXp)
     {
         $this->courbeXp = $courbeXp;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDernierEntrainement()
+    {
+        return $this->dernierEntrainement;
+    }
+
+    /**
+     * @param mixed $dernierEntrainement
+     */
+    public function setDernierEntrainement($dernierEntrainement)
+    {
+        $this->dernierEntrainement = $dernierEntrainement;
+    }
+
+
     
 }

@@ -52,7 +52,7 @@ function connexionDresseur()
         $url = "index.php?page=pokemon";
 
     } else {
-        $url = "index.php?page=home&erreur" . $rep["erreur"];
+        $url = "index.php?page=home&erreur=" . $rep["erreur"];
     }
 
     header("Location:" . $url);

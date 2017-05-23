@@ -10,7 +10,8 @@ function addPokemon($idDresseur, $idEspece, $xp, $niveau)
 {
     $dbh = connexionSQL();
 
-    $query = "INSERT INTO pokemon (idDresseur, idEspece, sexe, XP, niveau, enVente) VALUES (:idDresseur, :idEspece, :sexe, :XP, :niveau, :enVente);";
+    $query = "INSERT INTO pokemon (idDresseur, idEspece, sexe, XP, niveau, enVente) 
+    VALUES (:idDresseur, :idEspece, :sexe, :XP, :niveau, :enVente);";
     $sql = $dbh->prepare($query);
     $sql->bindValue(':idDresseur', $idDresseur, PDO::PARAM_INT);
     $sql->bindValue(':idEspece', $idEspece, PDO::PARAM_INT);
@@ -61,7 +62,8 @@ function getPokemons($id)
         }
 
         $pokemons[] = serialize(new Pokemon($po["id"], $po["idEspece"], $infos_espece["nom"], $evolution, $po["sexe"],
-            $po["XP"], $po["niveau"], $po["prixVente"], (boolean)$po["enVente"], $types, $infos_espece["courbe_XP"]));
+            $po["XP"], $po["niveau"], $po["prixVente"], (boolean)$po["enVente"], $types, $infos_espece["courbe_XP"],
+            $po["dernierEntrainement"]));
     }
 
     return $pokemons;
@@ -140,46 +142,55 @@ function getNbPokemons($id)
     return $sql->fetch()[0];
 }
 
-function courbeXP_R($level) {
-    return 0.8 * pow($level, 3);
+function courbeXP_R($niveau) {
+    return 0.8 * pow($niveau, 3);
 }
 
-function courbeXP_M($level) {
-    return pow($level, 3);
+function courbeXP_M($niveau) {
+    return pow($niveau, 3);
 }
 
-function courbeXP_P($level) {
-    return 1.2 * pow($level, 3) - 15 * pow($level, 2) + 100 * $level - 140;
+function courbeXP_P($niveau) {
+    return 1.2 * pow($niveau, 3) - 15 * pow($niveau, 2) + 100 * $niveau - 140;
 }
 
-function courbeXP_L($level) {
-    return 1.25 * pow($level, 3);
+function courbeXP_L($niveau) {
+    return 1.25 * pow($niveau, 3);
 }
 
-function maxXPForCurrentLevel($type, $level) {
+function maxXPForCurrentLevel($type, $niveau) {
     $ceilOfCurrentLevel = 100;
 
     if($type == 'R') {
-        $ceilOfCurrentLevel = courbeXP_R($level);      
+        $ceilOfCurrentLevel = courbeXP_R($niveau);      
     }
 
     else if($type == 'M') {
-        $ceilOfCurrentLevel = courbeXP_M($level);
+        $ceilOfCurrentLevel = courbeXP_M($niveau);
     }
 
     else if($type == 'P') {
-        $ceilOfCurrentLevel = courbeXP_P($level);
+        $ceilOfCurrentLevel = courbeXP_P($niveau);
     }
 
     else if($type == 'L') {
-        $ceilOfCurrentLevel = courbeXP_L($level);
-    }
-
-    else {
-        var_dump($type);
+        $ceilOfCurrentLevel = courbeXP_L($niveau);
     }
 
     return $ceilOfCurrentLevel;
+}
+
+function entrainementValide($dernierEntrainement) {
+    if(!$dernierEntrainement)
+        return true;
+
+    $diff = date_diff(new DateTime($dernierEntrainement), new DateTime());
+    $h = $diff->h;
+
+    if($h >= 1)
+        return true;
+
+    return false;
 }
 
 function entrainer($id)
@@ -188,7 +199,10 @@ function entrainer($id)
 
     $pokemon = getMyPokemonById($id);
 
-    if(! $pokemon->getEnVente()) {
+    if(entrainementValide($pokemon->getDernierEntrainement())) {
+        $now = new DateTime();
+        $now = $now->format("Y-m-d H:i:s");
+
         $xp = getNewXP($pokemon->getXp());
         $pokemon->setXp($xp);
 
@@ -201,14 +215,24 @@ function entrainer($id)
             $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
         }
 
-        setPokemons($pokemon);
-
         $query = "UPDATE pokemon SET XP = :xp WHERE id = :id;";
         $sql = $dbh->prepare($query);
         $sql->bindValue(':xp', $xp, PDO::PARAM_INT);
         $sql->bindValue(':id', $pokemon->getId(), PDO::PARAM_INT);
         $sql->execute();
+
+        $pokemon->setDernierEntrainement($now);
+
+        $query = "UPDATE pokemon SET dernierEntrainement = :date WHERE id = :id";
+        $sql = $dbh->prepare($query);
+        $sql->bindValue(':date', $now, PDO::PARAM_STR);
+        $sql->bindValue(':id', $id, PDO::PARAM_INT);
+        $sql->execute();
+
+        setPokemons($pokemon);
     }
+
+    header("Location:index.php?page=detail&pokemon=" . $pokemon->getId());
 }
 
 function mettreEnVente($idPokemon, $prix)
