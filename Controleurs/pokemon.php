@@ -61,7 +61,7 @@ function getPokemons($id)
         }
 
         $pokemons[] = serialize(new Pokemon($po["id"], $po["idEspece"], $infos_espece["nom"], $evolution, $po["sexe"],
-            $po["XP"], $po["niveau"], $po["prixVente"], (boolean)$po["enVente"], $types));
+            $po["XP"], $po["niveau"], $po["prixVente"], (boolean)$po["enVente"], $types, $infos_espece["courbe_XP"]));
     }
 
     return $pokemons;
@@ -140,6 +140,48 @@ function getNbPokemons($id)
     return $sql->fetch()[0];
 }
 
+function courbeXP_R($level) {
+    return 0.8 * pow($level, 3);
+}
+
+function courbeXP_M($level) {
+    return pow($level, 3);
+}
+
+function courbeXP_P($level) {
+    return 1.2 * pow($level, 3) - 15 * pow($level, 2) + 100 * $level - 140;
+}
+
+function courbeXP_L($level) {
+    return 1.25 * pow($level, 3);
+}
+
+function maxXPForCurrentLevel($type, $level) {
+    $ceilOfCurrentLevel = 100;
+
+    if($type == 'R') {
+        $ceilOfCurrentLevel = courbeXP_R($level);      
+    }
+
+    else if($type == 'M') {
+        $ceilOfCurrentLevel = courbeXP_M($level);
+    }
+
+    else if($type == 'P') {
+        $ceilOfCurrentLevel = courbeXP_P($level);
+    }
+
+    else if($type == 'L') {
+        $ceilOfCurrentLevel = courbeXP_L($level);
+    }
+
+    else {
+        var_dump($type);
+    }
+
+    return $ceilOfCurrentLevel;
+}
+
 function entrainer($id)
 {
     $dbh = connexionSQL();
@@ -149,6 +191,15 @@ function entrainer($id)
     if(! $pokemon->getEnVente()) {
         $xp = getNewXP($pokemon->getXp());
         $pokemon->setXp($xp);
+
+        $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
+
+        while($pokemon->getXp() >= $ceilxp) {
+            $pokemon->setXp($pokemon->getXp() - $ceilxp);
+            $pokemon->setNiveau($pokemon->getNiveau() + 1);
+
+            $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
+        }
 
         setPokemons($pokemon);
 
