@@ -1,11 +1,13 @@
 <?php
 include_once "Entitees/Dresseur.php";
 include_once "Entitees/Pokemon.php";
+include_once "Entitees/Annonce.php";
 include_once "Controleurs/connexionSQL.php";
 include_once "Controleurs/user.php";
 include_once "Controleurs/dresseur.php";
 include_once "Controleurs/pokemon.php";
 include_once "Controleurs/espece_pokemon.php";
+include_once "Controleurs/annonces.php";
 
 session_start();
 
@@ -67,7 +69,21 @@ switch ($action) {
         break;
 
     case "mettre_en_vente" :
-        mettreEnVentePokemon();
+        $idPokemon = getFieldFromForm("pokemon");
+        $prix = getFieldFromForm("prix");
+        mettreEnVentePokemon($idPokemon, $prix);
+        break;
+
+    case "annonces" :
+        include "Pages/annonces.php";
+        break;
+
+    case "acheter" :
+        $idPokemon = getFieldFromForm("pokemon");
+        $prix = getFieldFromForm("prix");
+        $idDresseur = getFieldFromForm("dresseur");
+
+        acheterAnnonce($idDresseur, $idPokemon, $prix);
         break;
 
     case "deconnexion" :

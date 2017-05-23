@@ -26,6 +26,16 @@ function inscriptionDresseur()
         echo $rep["erreur"];
 }
 
+function getInfosDresseur($id)
+{
+    $dbh = connexionSQL();
+    $query = "SELECT * FROM dresseur WHERE id = :id;";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':id', $id, PDO::PARAM_INT);
+    $sql->execute();
+    return $sql->fetch();
+}
+
 function connexionDresseur()
 {
     $rep = connexion();
@@ -33,7 +43,10 @@ function connexionDresseur()
     if ($rep["succes"]) {
         $user = $rep["user"];
 
-        $_SESSION["dresseur"] = serialize(new Dresseur($user["id"], $user["login"], getInfosDresseur($user["id"])));
+        $infos = getInfosDresseur($user["id"]);
+        $nbPieces = $infos["nbPieces"];
+
+        $_SESSION["dresseur"] = serialize(new Dresseur($user["id"], $user["login"], $nbPieces));
         $_SESSION["pokemons"] = getPokemons($user["id"]);
 
         $url = "index.php?page=pokemon";
@@ -56,24 +69,83 @@ function getDresseur()
     return unserialize($_SESSION["dresseur"]);
 }
 
-function getInfosDresseur($id)
+function setDresseur($dresseur)
 {
-    $dbh = connexionSQL();
+    $_SESSION["dresseur"] = serialize($dresseur);
+}
 
-    $query = "SELECT nbPieces FROM dresseur WHERE id = :id;";
-    $sql = $dbh->prepare($query);
-    $sql->bindValue(':id', $id, PDO::PARAM_INT);
-    $sql->execute();
+function getNbPiecesDresseur()
+{
+    return getDresseur()->getNbPieces();
+}
 
-    return $sql->fetch()["nbPieces"];
+
+function getIdDresseur()
+{
+    return getDresseur()->getId();
 }
 
 function entrainerPokemon()
 {
-    entrainer(getDresseur()->getId(), getFieldFromForm("pokemon"));
+    entrainer(getFieldFromForm("pokemon"));
 }
 
-function mettreEnVentePokemon()
+function mettreEnVentePokemon($id, $prix)
 {
-    
+    if (!$prix)
+        echo "
+            <form action='' method='post'>
+                <label>A quel prix voulez-vous le vendre ?</label>
+                <input type='number' name='prix'>
+                <input type='submit' value='Mettre en vente'>
+            </form>
+        ";
+    else {
+        mettreEnVente($id, $prix);
+    }
+}
+
+function acheterPokemon($idPokemon, $prix)
+{
+    if (getNbPiecesDresseur() >= $prix) {
+        $dbh = connexionSQL();
+
+        $query = "UPDATE dresseur SET nbPieces = nbPieces - :prix WHERE id = :id";
+        $sql = $dbh->prepare($query);
+        $sql->bindValue(':prix', $prix);
+        $sql->bindValue(':id', getIdDresseur());
+        $sql->execute();
+
+        $d = getDresseur();
+
+        $d->setNbPieces($d->getNbPieces() - $prix);
+
+        setDresseur($d);
+
+        acheterParDresseur($idPokemon, getIdDresseur());
+    }
+
+}
+
+function getDresseurById($id)
+{
+    $dbh = connexionSQL();
+
+    $query = "SELECT * FROM dresseur WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':id', $id);
+    $sql->execute();
+
+    return $sql->fetch();
+}
+
+function recevoirPieces($idDresseur, $pieces)
+{
+    $dbh = connexionSQL();
+
+    $query = "UPDATE dresseur SET nbPieces = nbPieces + :pieces WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':pieces', $pieces);
+    $sql->bindValue(':id', $idDresseur);
+    $sql->execute();
 }

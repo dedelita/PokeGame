@@ -6,17 +6,18 @@ function getRandomSexe()
 }
 
 //add
-function addPokemon($id_dresseur, $id_espece, $xp, $niveau)
+function addPokemon($idDresseur, $idEspece, $xp, $niveau)
 {
     $dbh = connexionSQL();
 
-    $query = "INSERT INTO pokemon (id_dresseur, id_espece, sexe, XP, niveau) VALUES (:id_dresseur, :id_espece, :sexe, :XP, :niveau);";
+    $query = "INSERT INTO pokemon (idDresseur, idEspece, sexe, XP, niveau, enVente) VALUES (:idDresseur, :idEspece, :sexe, :XP, :niveau, :enVente);";
     $sql = $dbh->prepare($query);
-    $sql->bindValue(':id_dresseur', $id_dresseur, PDO::PARAM_INT);
-    $sql->bindValue(':id_espece', $id_espece, PDO::PARAM_INT);
+    $sql->bindValue(':idDresseur', $idDresseur, PDO::PARAM_INT);
+    $sql->bindValue(':idEspece', $idEspece, PDO::PARAM_INT);
     $sql->bindValue(':sexe', getRandomSexe(), PDO::PARAM_INT);
     $sql->bindValue(':XP', $xp, PDO::PARAM_INT);
     $sql->bindValue(':niveau', $niveau, PDO::PARAM_INT);
+    $sql->bindValue(':enVente', false, PDO::PARAM_BOOL);
     $sql->execute();
 }
 
@@ -27,7 +28,7 @@ function deletePokemonByName($nom)
 
     $p = getPokemonByName($nom);
 
-    $query = "DELETE FROM pokemon WHERE nom=:nom;";
+    $query = "DELETE FROM pokemon WHERE nom = :nom;";
     $sql = $dbh->prepare($query);
     $sql->bindValue(':nom', $nom);
     $sql->execute();
@@ -38,14 +39,14 @@ function getPokemons($id)
 {
     $dbh = connexionSQL();
 
-    $sql = $dbh->prepare("SELECT * FROM pokemon WHERE id_dresseur = :id_dresseur;");
-    $sql->bindValue(':id_dresseur', $id, PDO::PARAM_INT);
+    $sql = $dbh->prepare("SELECT * FROM pokemon WHERE idDresseur = :idDresseur;");
+    $sql->bindValue(':idDresseur', $id, PDO::PARAM_INT);
     $sql->execute();
     $poks = $sql->fetchAll();
 
     $pokemons = array();
     foreach ($poks as $po) {
-        $infos_espece = getInfosEspece($po["id_espece"]);
+        $infos_espece = getInfosEspece($po["idEspece"]);
 
 
         if ($infos_espece["evolution"] == 'n') {
@@ -59,25 +60,25 @@ function getPokemons($id)
             $types[] = $infos_espece["type2"];
         }
 
-        $pokemons[] = serialize(new Pokemon($po["id"], $po["id_espece"], $infos_espece["nom"], $evolution, $po["sexe"],
-            $po["XP"], $po["niveau"], $po["prix_vente"], $po["en_vente"], $types));
+        $pokemons[] = serialize(new Pokemon($po["id"], $po["idEspece"], $infos_espece["nom"], $evolution, $po["sexe"],
+            $po["XP"], $po["niveau"], $po["prix_vente"], (boolean)$po["enVente"], $types));
     }
 
     return $pokemons;
 }
 
-function getPokemonByName($nom)
+function getPokemonById($id)
 {
     $pokemons = $_SESSION["pokemons"];
 
     foreach ($pokemons as $key => $pokemon) {
         $pokemon = unserialize($pokemon);
 
-        if($pokemon->getNom() == $nom) {
+        if($pokemon->getId() == $id) {
             return $pokemon;
         }
     }
-    
+
     return null;
 }
 
@@ -86,7 +87,7 @@ function getNewXP($old_xp)
     return $old_xp + rand(10, 30);
 }
 
-function setPokemon($pokemon)
+function setPokemons($pokemon)
 {
     $pokemons = $_SESSION["pokemons"];
 
@@ -98,36 +99,63 @@ function setPokemon($pokemon)
         }
     }
 }
-
 //Statistiques
 function getNbPokemons($id)
 {
     $dbh = connexionSQL();
 
-    $query = "SELECT COUNT(id) FROM pokemon WHERE id_dresseur = :id_dresseur;";
+    $query = "SELECT COUNT(id) FROM pokemon WHERE idDresseur = :idDresseur;";
     $sql = $dbh->prepare($query);
-    $sql->bindValue(':id_dresseur', $id, PDO::PARAM_INT);
+    $sql->bindValue(':idDresseur', $id, PDO::PARAM_INT);
     $sql->execute();
 
     return $sql->fetch()[0];
 }
 
-function entrainer($id_dresseur, $nom)
+function entrainer($id)
 {
     $dbh = connexionSQL();
 
-    $pokemon = getPokemonByName($nom);
+    $pokemon = getPokemonById($id);
 
-    $xp = getNewXP($pokemon->getXp());
+    if(! $pokemon->getEnVente()) {
+        $xp = getNewXP($pokemon->getXp());
+        $pokemon->setXp($xp);
 
-    $query = "UPDATE pokemon SET XP = :xp WHERE id = :id AND id_dresseur = :id_dresseur;";
+        setPokemons($pokemon);
+
+        $query = "UPDATE pokemon SET XP = :xp WHERE id = :id;";
+        $sql = $dbh->prepare($query);
+        $sql->bindValue(':xp', $xp, PDO::PARAM_INT);
+        $sql->bindValue(':id', $pokemon->getId(), PDO::PARAM_INT);
+        $sql->execute();
+    }
+}
+
+function mettreEnVente($idPokemon, $prix)
+{
+    $dbh = connexionSQL();
+
+    $pokemon = getPokemonById($idPokemon);
+    $pokemon->setPrixVente($prix);
+    $pokemon->setEnVente(true);
+
+    setPokemons($pokemon);
+
+    $query = "UPDATE Pokemon SET prixVente = :prix, enVente = true WHERE id = :id";
     $sql = $dbh->prepare($query);
-    $sql->bindValue(':xp', $xp, PDO::PARAM_INT);
-    $sql->bindValue(':id', $pokemon->getId(), PDO::PARAM_INT);
-    $sql->bindValue(':id_dresseur', $id_dresseur, PDO::PARAM_INT);
+    $sql->bindValue(':prix', $prix, PDO::PARAM_INT);
+    $sql->bindValue(':id', $idPokemon, PDO::PARAM_INT);
     $sql->execute();
+}
 
-    $pokemon->setXp($xp);
+function acheterParDresseur($idPokemon, $idDresseur)
+{
+    $dbh = connexionSQL();
 
-    setPokemon($pokemon);
+    $query = "UPDATE Pokemon SET idDresseur = :idDresseur, enVente = false WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':idDresseur', $idDresseur, PDO::PARAM_INT);
+    $sql->bindValue(':id', $idPokemon, PDO::PARAM_INT);
+    $sql->execute();
 }

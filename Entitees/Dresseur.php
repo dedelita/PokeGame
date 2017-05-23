@@ -20,7 +20,7 @@ class Dresseur
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -28,7 +28,7 @@ class Dresseur
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      */
     public function setId($id)
     {

@@ -1,20 +1,23 @@
 <?php
-$nom = getFieldFromForm("pokemon");
+$id = getFieldFromForm("pokemon");
 
-$pokemon = getPokemonByName($nom);
+$pokemon = getPokemonById($id);
 
-echo "<h1>$nom</h1>
-    
-    <a href='index.php?page=detail&action=entrainer&pokemon=$nom'>Entraîner</a>
-    <a href='index.php?page=detail&action=mettre_en_vente&pokemon=$nom'>Mettre en vente</a>
-    
+echo "<h1>{$pokemon->getNom()}</h1>";
+
+if(!$pokemon->getEnVente()) {
+    echo "<a href='index.php?page=detail&action=entrainer&pokemon=$id'>Entraîner</a>
+    <a href='index.php?page=detail&action=mettre_en_vente&pokemon=$id'>Mettre en vente</a>";
+}
+
+echo "
     <p>{$pokemon->getEvolution()}</p>
 
     <p>Numéro : {$pokemon->getNumero()}</p>
     
     <p>Sexe : {$pokemon->getSexe()}</p>
 
-    <p>Ces types :</p>
+    <p>Ses types :</p>
     
     <ul>";
 
@@ -23,8 +26,8 @@ foreach ($pokemon->getTypes() as $type) {
 }
 
 echo "</ul>
+
     <p>XP : {$pokemon->getXp()}</p>
     <p>Niveau : {$pokemon->getNiveau()}</p>";
 
 ?>
-
