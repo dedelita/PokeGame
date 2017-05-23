@@ -110,7 +110,7 @@ main h2 {
 }
 
 .pokemon-list img {
-  width: auto;
+  width: 100%;
 }
 
 .pokemon-detail {
