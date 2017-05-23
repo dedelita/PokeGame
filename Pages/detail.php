@@ -3,6 +3,7 @@ $id = getFieldFromForm("pokemon");
 
 $pokemon = getMyPokemonById($id);
 $nom = $pokemon->getNom();
+$ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
 ?>
 
 <div class="pokemon-detail">
@@ -30,7 +31,7 @@ $nom = $pokemon->getNom();
     <li class="stat-xp">
         <div id="xp-graph"></div>
         <div class="inner">
-            <div><span><?= $pokemon->getXp() ?></span><span>9999</span></div>
+            <div><span><?= $pokemon->getXp() ?></span><span><?= $ceilxp ?></span></div>
             <div>XP</div>
         </div>
     </li>
@@ -40,10 +41,8 @@ $nom = $pokemon->getNom();
 
 <script>
     var XP = <?= $pokemon->getXp() ?>,
-        XPMax = 9999;
-</script>
+        XPMax = <?= $ceilxp ?>;
 
-<script>
     window.addEventListener("load", function() {
         var bar = new ProgressBar.Circle('#xp-graph', {
             strokeWidth: 5,
