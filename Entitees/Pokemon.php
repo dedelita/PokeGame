@@ -9,7 +9,7 @@ class Pokemon
     private $sexe;
     private $xp;
     private $niveau;
-    private $prix_vente;
+    private $prixVente;
     private $types;
     private $enVente;
 
@@ -22,11 +22,11 @@ class Pokemon
      * @param $sexe
      * @param $xp
      * @param $niveau
-     * @param $prix_vente
-     * @param $en_vente
+     * @param $prixVente
+     * @param $enVente
      * @param $types
      */
-    public function __construct($id, $numero, $nom, $evolution, $sexe, $xp, $niveau, $prix_vente, $en_vente, $types)
+    public function __construct($id, $numero, $nom, $evolution, $sexe, $xp, $niveau, $prixVente, $enVente, $types)
     {
         $this->id = $id;
         $this->numero = $numero;
@@ -35,8 +35,8 @@ class Pokemon
         $this->sexe = $sexe;
         $this->xp = $xp;
         $this->niveau = $niveau;
-        $this->prix_vente = $prix_vente;
-        $this->enVente = $en_vente;
+        $this->prix_vente = $prixVente;
+        $this->enVente = $enVente;
         $this->types = $types;
     }
 
@@ -163,9 +163,9 @@ class Pokemon
     /**
      * @param mixed $prix_vente
      */
-    public function setPrixVente($prix_vente)
+    public function setPrixVente($prixVente)
     {
-        $this->prix_vente = $prix_vente;
+        $this->prixVente = $prixVente;
     }
 
     /**

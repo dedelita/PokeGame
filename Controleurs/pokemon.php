@@ -21,18 +21,18 @@ function addPokemon($idDresseur, $idEspece, $xp, $niveau)
     $sql->execute();
 }
 
-//delete
-function deletePokemonByName($nom)
-{
-    $dbh = connexionSQL();
-
-    $p = getPokemonByName($nom);
-
-    $query = "DELETE FROM pokemon WHERE nom = :nom;";
-    $sql = $dbh->prepare($query);
-    $sql->bindValue(':nom', $nom);
-    $sql->execute();
-}
+////delete
+//function deletePokemonById($id)
+//{
+//    $dbh = connexionSQL();
+//
+//    $p = getMyPokemonById($id);
+//
+//    $query = "DELETE FROM pokemon WHERE id = :id;";
+//    $sql = $dbh->prepare($query);
+//    $sql->bindValue(':id', $id);
+//    $sql->execute();
+//}
 
 //getters & setters
 function getPokemons($id)
@@ -61,13 +61,13 @@ function getPokemons($id)
         }
 
         $pokemons[] = serialize(new Pokemon($po["id"], $po["idEspece"], $infos_espece["nom"], $evolution, $po["sexe"],
-            $po["XP"], $po["niveau"], $po["prix_vente"], (boolean)$po["enVente"], $types));
+            $po["XP"], $po["niveau"], $po["prixVente"], (boolean)$po["enVente"], $types));
     }
 
     return $pokemons;
 }
 
-function getPokemonById($id)
+function getMyPokemonById($id)
 {
     $pokemons = $_SESSION["pokemons"];
 
@@ -80,6 +80,34 @@ function getPokemonById($id)
     }
 
     return null;
+}
+
+function getPokemonById($id)
+{
+    $dbh = connexionSQL();
+
+    $query = "SELECT * FROM pokemon WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':id', $id, PDO::PARAM_INT);
+    $sql->execute();
+
+    $p = $sql->fetch();
+
+    $infos_espece = getInfosEspece($p["idEspece"]);
+
+    if ($infos_espece["evolution"] == 'n') {
+        $evolution = "Pokémon de base";
+    } else {
+        $evolution = "Pokémon d'évolution";
+    }
+
+    $types = array($infos_espece["type1"]);
+    if($infos_espece["type2"]) {
+        $types[] = $infos_espece["type2"];
+    }
+
+    return new Pokemon($id, $p["idEspece"], $infos_espece["nom"], $evolution, $p["sexe"], $p["XP"], $p["niveau"],
+        (boolean)$p["prixVente"], $p["enVente"], $types);
 }
 
 function getNewXP($old_xp)
@@ -116,7 +144,7 @@ function entrainer($id)
 {
     $dbh = connexionSQL();
 
-    $pokemon = getPokemonById($id);
+    $pokemon = getMyPokemonById($id);
 
     if(! $pokemon->getEnVente()) {
         $xp = getNewXP($pokemon->getXp());
@@ -136,7 +164,7 @@ function mettreEnVente($idPokemon, $prix)
 {
     $dbh = connexionSQL();
 
-    $pokemon = getPokemonById($idPokemon);
+    $pokemon = getMyPokemonById($idPokemon);
     $pokemon->setPrixVente($prix);
     $pokemon->setEnVente(true);
 

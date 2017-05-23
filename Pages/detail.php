@@ -1,7 +1,7 @@
 <?php
 $id = getFieldFromForm("pokemon");
 
-$pokemon = getPokemonById($id);
+$pokemon = getMyPokemonById($id);
 $nom = $pokemon->getNom();
 ?>
 
@@ -44,7 +44,7 @@ $nom = $pokemon->getNom();
 </script>
 
 <script>
-    window.addEventListener("load", () => {
+    window.addEventListener("load", function() {
         var bar = new ProgressBar.Circle('#xp-graph', {
             strokeWidth: 5,
             easing: 'easeInOut',
@@ -60,7 +60,7 @@ $nom = $pokemon->getNom();
 </script>
 
 <div class="actions">
-    <a href='index.php?page=detail&amp;action=entrainer&amp;pokemon=<?= $nom ?>'>Entraîner</a>
-    <a href='index.php?page=detail&amp;action=mettre_en_vente&amp;pokemon=<?= $nom ?>'>Mettre en vente</a>
+    <a href='index.php?page=detail&amp;action=entrainer&amp;pokemon=<?= $id ?>'>Entraîner</a>
+    <a href='index.php?page=detail&amp;action=mettre_en_vente&amp;pokemon=<?= $id ?>'>Mettre en vente</a>
 </div>
 
