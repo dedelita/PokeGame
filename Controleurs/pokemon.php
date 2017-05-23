@@ -250,6 +250,8 @@ function mettreEnVente($idPokemon, $prix)
     $sql->bindValue(':prix', $prix, PDO::PARAM_INT);
     $sql->bindValue(':id', $idPokemon, PDO::PARAM_INT);
     $sql->execute();
+    
+    header("Location:index.php?page=detail&pokemon=" . $pokemon->getId());
 }
 
 function acheterParDresseur($idPokemon, $idDresseur)
