@@ -116,6 +116,7 @@ main > h3 {
 
 .pokemon-list img {
   width: 100%;
+  max-width: 100px;
 }
 
 .pokemon-detail {
@@ -128,6 +129,7 @@ main > h3 {
 
 .pokemon-detail > img {
   flex: 0 0 150px;
+  max-width: 150px;
   padding-right: 20px;
   border-right: 1px solid #BBB;
   margin-right: 20px;
