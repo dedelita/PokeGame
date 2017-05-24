@@ -215,9 +215,10 @@ function entrainer($id)
             $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
         }
 
-        $query = "UPDATE pokemon SET XP = :xp WHERE id = :id;";
+        $query = "UPDATE pokemon SET XP = :xp, niveau = :niveau WHERE id = :id;";
         $sql = $dbh->prepare($query);
         $sql->bindValue(':xp', $xp, PDO::PARAM_INT);
+        $sql->bindValue(':niveau', $pokemon->getNiveau(), PDO::PARAM_INT);
         $sql->bindValue(':id', $pokemon->getId(), PDO::PARAM_INT);
         $sql->execute();
 
