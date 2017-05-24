@@ -112,9 +112,9 @@ function getPokemonById($id)
         (boolean)$p["prixVente"], $p["enVente"], $types);
 }
 
-function getNewXP($old_xp)
+function getNewXP()
 {
-    return $old_xp + rand(10, 30);
+    return rand(10, 30);
 }
 
 function setPokemons($pokemon)
@@ -158,36 +158,36 @@ function courbeXP_L($niveau) {
     return 1.25 * pow($niveau, 3);
 }
 
-function maxXPForCurrentLevel($type, $niveau) {
+function maxXPForCurrentLevel($courbeXP, $niveau) {
     $ceilOfCurrentLevel = 100;
 
-    if($type == 'R') {
+    if($courbeXP == 'R') {
         $ceilOfCurrentLevel = courbeXP_R($niveau);      
     }
 
-    else if($type == 'M') {
+    else if($courbeXP == 'M') {
         $ceilOfCurrentLevel = courbeXP_M($niveau);
     }
 
-    else if($type == 'P') {
+    else if($courbeXP == 'P') {
         $ceilOfCurrentLevel = courbeXP_P($niveau);
     }
 
-    else if($type == 'L') {
+    else if($courbeXP == 'L') {
         $ceilOfCurrentLevel = courbeXP_L($niveau);
     }
 
     return intval(max(1, $ceilOfCurrentLevel));
 }
 
-function entrainementValide($dernierEntrainement) {
+function entrainementValide($dernierEntrainement, $niveau) {
     if(!$dernierEntrainement)
         return true;
 
     $diff = date_diff(new DateTime($dernierEntrainement), new DateTime());
     $h = $diff->h;
 
-    if($h >= 1)
+    if($h >= 1 && $niveau < 99)
         return true;
 
     return false;
@@ -199,12 +199,12 @@ function entrainer($id)
 
     $pokemon = getMyPokemonById($id);
 
-    if(entrainementValide($pokemon->getDernierEntrainement())) {
+    if(entrainementValide($pokemon->getDernierEntrainement(), $pokemon->getNiveau())) {
         $now = new DateTime();
         $now = $now->format("Y-m-d H:i:s");
 
-        $xp = getNewXP($pokemon->getXp());
-        $pokemon->setXp($xp);
+        $newxp = getNewXP();
+        $pokemon->setXp($pokemon->getXp() + $newxp);
 
         $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
 
@@ -217,7 +217,7 @@ function entrainer($id)
 
         $query = "UPDATE pokemon SET XP = :xp, niveau = :niveau WHERE id = :id;";
         $sql = $dbh->prepare($query);
-        $sql->bindValue(':xp', $xp, PDO::PARAM_INT);
+        $sql->bindValue(':xp', $pokemon->getXp(), PDO::PARAM_INT);
         $sql->bindValue(':niveau', $pokemon->getNiveau(), PDO::PARAM_INT);
         $sql->bindValue(':id', $pokemon->getId(), PDO::PARAM_INT);
         $sql->execute();
@@ -252,6 +252,23 @@ function mettreEnVente($idPokemon, $prix)
     $sql->bindValue(':id', $idPokemon, PDO::PARAM_INT);
     $sql->execute();
     
+    header("Location:index.php?page=detail&pokemon=" . $pokemon->getId());
+}
+
+function annulerVente($idPokemon)
+{
+    $dbh = connexionSQL();
+
+    $pokemon = getMyPokemonById($idPokemon);
+    $pokemon->setEnVente(false);
+
+    setPokemons($pokemon);
+
+    $query = "UPDATE Pokemon SET enVente = false WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':id', $idPokemon);
+    $sql->execute();
+
     header("Location:index.php?page=detail&pokemon=" . $pokemon->getId());
 }
 

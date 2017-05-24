@@ -116,6 +116,11 @@ function mettreEnVentePokemon($id, $prix)
     }
 }
 
+function annulerVentePokemon($id)
+{
+    annulerVente($id);
+}
+
 function acheterPokemon($idPokemon, $prix)
 {
     if (getNbPiecesDresseur() >= $prix) {

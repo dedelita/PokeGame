@@ -80,9 +80,11 @@ switch ($action) {
         break;
 
     case "mettre_en_vente" :
-        $idPokemon = getFieldFromForm("pokemon");
-        $prix = getFieldFromForm("prix");
-        mettreEnVentePokemon($idPokemon, $prix);
+        mettreEnVentePokemon(getFieldFromForm("pokemon"), getFieldFromForm("prix"));
+        break;
+
+    case "annuler_vente" :
+        annulerVentePokemon(getFieldFromForm("pokemon"));
         break;
 
     case "annonces" :
@@ -90,11 +92,7 @@ switch ($action) {
         break;
 
     case "acheter" :
-        $idPokemon = getFieldFromForm("pokemon");
-        $prix = getFieldFromForm("prix");
-        $idDresseur = getFieldFromForm("dresseur");
-
-        acheterAnnonce($idDresseur, $idPokemon, $prix);
+        acheterAnnonce(getFieldFromForm("dresseur"), getFieldFromForm("pokemon"), getFieldFromForm("prix"));
         break;
 
     case "deconnexion" :

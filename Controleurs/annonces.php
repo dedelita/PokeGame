@@ -5,18 +5,40 @@ function getAnnonces()
     $dbh = connexionSQL();
 
     $query = "SELECT p.id, p.idDresseur, p.sexe, p.XP, p.niveau, p.prixVente, e.nom FROM pokemon p, espece_pokemon e 
-      WHERE p.enVente = true AND p.idEspece = e.id;";
+      WHERE p.enVente = true AND p.idEspece = e.id AND p.idDresseur != :idDresseur;";
     $sql = $dbh->prepare($query);
+    $sql->bindValue(':idDresseur', getIdDresseur());
     $sql->execute();
 
     $res = $sql->fetchAll();
-    $annonces = array();
 
-    foreach ($res as $r) {
-        $annonces[] = new Annonce($r["id"], $r["idDresseur"], $r["nom"], $r["prixVente"], $r["niveau"], $r["XP"]);
+    return getNewAnnonces($res);
+}
+
+function getMesAnnonces()
+{
+    $dbh = connexionSQL();
+
+    $query = "SELECT p.id, p.idDresseur, p.sexe, p.XP, p.niveau, p.prixVente, e.nom FROM pokemon p, espece_pokemon e 
+      WHERE p.enVente = true AND p.idEspece = e.id AND p.idDresseur = :idDresseur;";
+
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':idDresseur', getIdDresseur());
+    $sql->execute();
+
+    $res = $sql->fetchAll();
+
+    return getNewAnnonces($res);
+}
+
+function getNewAnnonces($annonces)
+{
+    $res = array();
+    foreach ($annonces as $annonce) {
+        $res[] = new Annonce($annonce["id"], $annonce["idDresseur"], $annonce["nom"], $annonce["prixVente"], $annonce["niveau"], $annonce["XP"]);
     }
-    
-    return $annonces;
+
+    return $res;
 }
 
 function acheterAnnonce($idVendeur, $idPokemon, $prix)
@@ -24,6 +46,6 @@ function acheterAnnonce($idVendeur, $idPokemon, $prix)
     if($idVendeur != getIdDresseur()) {
         acheterPokemon($idPokemon, $prix);
         recevoirPieces($idVendeur, $prix);
+        acheterParDresseur($idPokemon, getIdDresseur());
     }
-    acheterParDresseur($idPokemon, getIdDresseur());
 }
