@@ -31,19 +31,24 @@ $pokemons = getAnnonces();
 
 $pokemons = getMesAnnonces();
 ?>
+
 <hr>
+
 <h2>Mes pokémons en vente</h2>
+
 <?php if($pokemons) { ?>
-    <div class="pokemon-on-sale">
+    <div class="my pokemon-on-sale">
         <div class="header">Espèce</div>
         <div class="header">Niveau</div>
         <div class="header">XP</div>
         <div class="header">Prix</div>
+        <div></div>
         <?php foreach ($pokemons as $pokemon) { ?>
             <div><?= $pokemon->getNomPokemon()?></div>
             <div><?= $pokemon->getNiveau()?></div>
             <div><?=$pokemon->getXP()?></div>
             <div><span><?= $pokemon->getPrix()?> <i class="fa fa-fw fa-usd"></i></span></div>
+            <div><a href='index.php?page=detail&amp;action=annuler_vente&amp;pokemon=<?= $id ?>'>Annuler</a></div>
         <?php } ?>
     </div>
 <?php } ?>
