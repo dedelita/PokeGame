@@ -104,14 +104,16 @@ function entrainerPokemon()
 
 function mettreEnVentePokemon($id, $prix)
 {
-    if (!$prix)
+    if (!$prix) {
+        $default = getPrix($id);
+
         echo "
             <form class='sell-form' action='' method='post'>
-                <input type='number' name='prix' value='500' minimum='1'>
+                <input type='number' name='prix' value='$default' minimum='1'>
                 <input type='submit' value='Vendre'>
             </form>
         ";
-    else {
+    } else {
         mettreEnVente($id, $prix);
     }
 }

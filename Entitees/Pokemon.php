@@ -164,7 +164,7 @@ class Pokemon
      */
     public function getPrixVente()
     {
-        return $this->prix_vente;
+        return $this->prixVente;
     }
 
     /**

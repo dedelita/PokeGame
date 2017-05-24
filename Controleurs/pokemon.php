@@ -255,6 +255,13 @@ function mettreEnVente($idPokemon, $prix)
     header("Location:index.php?page=detail&pokemon=" . $pokemon->getId());
 }
 
+function getPrix($idPokemon)
+{
+    $pokemon = getMyPokemonById($idPokemon);
+    return (!$pokemon->getPrixVente()) ? 200 : $pokemon->getPrixVente();
+
+}
+
 function annulerVente($idPokemon)
 {
     $dbh = connexionSQL();
