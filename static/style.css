@@ -145,7 +145,7 @@ main h2 {
 }
 
 .pokemon-detail li {
-  padding: .4em .8em;
+  padding: .4em .7em .3em;
   border: 1px solid #BBB;
   border-radius: 3px;
 }
@@ -232,16 +232,26 @@ body.detail .actions {
   margin: 20px 0 0;
 }
 
-body.detail .actions a {
+body.detail .actions a,
+body.detail .actions span {
   margin: 0 10px;
   padding: .5em 1em;
-  border: 1px solid #DD2828;
   border-radius: 100px;
+  border: 1px solid transparent;
+}
+
+body.detail .actions a {
+  border-color: #DD2828;
   color: #DD2828;
 }
 
 body.detail .actions a:hover {
   box-shadow: 0 0 0 3px rgba(221, 40, 40, .3);
+}
+
+body.detail .actions span {
+  border-color: #BBB;
+  color: #BBB;
 }
 
 footer {

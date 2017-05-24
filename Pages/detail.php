@@ -62,6 +62,17 @@ $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
     <div class="actions">
         <?php if(entrainementValide($pokemon->getDernierEntrainement())) { ?>
             <a href='index.php?page=detail&amp;action=entrainer&amp;pokemon=<?= $id ?>'>Entraîner</a>
+        <?php } else { 
+            $timeToTrain = new DateTime($pokemon->getDernierEntrainement());
+            $timeToTrain->add(new DateInterval('PT1H'));
+            $now = new DateTime();
+            $remaining = date_diff($now, $timeToTrain);
+            $remainingMinutes = $remaining->format('%i minutes');
+        ?>
+            <span class="training-wait">
+                <i class="fa fa-fw fa-clock-o"></i>
+                <?= $remainingMinutes ?>
+            </span>
         <?php } ?>
         <a href='index.php?page=detail&amp;action=mettre_en_vente&amp;pokemon=<?= $id ?>'>Mettre en vente</a>
     </div>
