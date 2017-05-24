@@ -38,7 +38,7 @@ if (!$page)
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Raleway:300,900,900italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,500|Raleway:300,900,900italic">
     <link rel="stylesheet" href="static/reset.css">
     <?php if($page != "home") { ?>
     <link rel="stylesheet" href="static/style.css">

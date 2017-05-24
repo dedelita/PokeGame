@@ -94,10 +94,9 @@ function mettreEnVentePokemon($id, $prix)
 {
     if (!$prix)
         echo "
-            <form action='' method='post'>
-                <label>A quel prix voulez-vous le vendre ?</label>
-                <input type='number' name='prix'>
-                <input type='submit' value='Mettre en vente'>
+            <form class='sell-form' action='' method='post'>
+                <input type='number' name='prix' value='500' minimum='1'>
+                <input type='submit' value='Vendre'>
             </form>
         ";
     else {

@@ -58,8 +58,8 @@ $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
     })
 </script>
 
-<?php if(!$pokemon->getEnVente()) { ?>
-    <div class="actions">
+<div class="actions">
+    <?php if(!$pokemon->getEnVente()) { ?>
         <?php if(entrainementValide($pokemon->getDernierEntrainement())) { ?>
             <a href='index.php?page=detail&amp;action=entrainer&amp;pokemon=<?= $id ?>'>Entraîner</a>
         <?php } else { 
@@ -76,7 +76,8 @@ $ceilxp = maxXPForCurrentLevel($pokemon->getCourbeXp(), $pokemon->getNiveau());
         <?php } ?>
         <a href='index.php?page=detail&amp;action=mettre_en_vente&amp;pokemon=<?= $id ?>'>Mettre en vente</a>
     </div>
-<?php } else { ?>
-    <div>Mis en vente</div>
-<?php } ?>
+    <?php } else { ?>
+        <span>Mis en vente</span>
+    <?php } ?>
+</div>
 

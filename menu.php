@@ -11,6 +11,7 @@
                 <?php
             } else {
                 ?>
+                <span class="money"><?= getNbPiecesDresseur() ?> <i class="fa fa-fw fa-usd"></i></span>
                 <a class="logout" href="index.php?action=deconnexion">Déconnexion</a>
                 <?php
             }

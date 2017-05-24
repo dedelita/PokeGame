@@ -78,11 +78,17 @@ main {
   border-radius: 0 0 3px 3px;
 }
 
-main h2 {
-  position: relative;
+main > h2 {
   text-align: center;
   color: #333;
   font: 2em Raleway, system-ui, sans-serif;
+  font-weight: 900;
+}
+
+main > h3 {
+  margin-top: 10px;
+  color: #666;
+  font: 1.2em 'Raleway', system-ui, sans-serif;
   font-weight: 900;
 }
 
@@ -130,6 +136,11 @@ main h2 {
 
 .pokemon-detail > div {
   flex: 0 0 auto;
+}
+
+.pokemon-detail h2 {
+  font: 2em Raleway, system-ui, sans-serif;
+  font-weight: 900;
 }
 
 .pokemon-detail h2 span {
@@ -252,6 +263,88 @@ body.detail .actions a:hover {
 body.detail .actions span {
   border-color: #BBB;
   color: #BBB;
+}
+
+body.detail .sell-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 25px;
+  border-top: 1px solid #BBB;
+  padding-top: 25px;
+}
+
+body.detail .sell-form:before,
+body.detail .sell-form:after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+}
+
+body.detail .sell-form:before {
+  top: 0;
+  border-top-color: #BBB;
+}
+
+body.detail .sell-form:after {
+  top: -1px;
+  border-top-color: white;
+}
+
+body.detail .sell-form * {
+  margin: 0 10px;
+}
+
+body.detail .sell-form input[type="submit"] {
+  font-size: .8em;
+  padding: .3em 1em;
+  border-radius: 100px;
+  border: 1px solid #DD2828;
+  color: #DD2828;
+  background: transparent;
+}
+
+.pokemon-on-sale {
+  display: grid;
+  grid-template-columns: 2fr repeat(4, 1fr);
+  grid-auto-rows: 30px;
+  grid-gap: 5px;
+  margin-top: 10px;
+}
+
+.pokemon-on-sale .header {
+  font: 0.7em 'Raleway', system-ui, sans-serif;
+  font-weight: 900;
+  color: #BBB;
+  text-transform: uppercase; 
+}
+
+.pokemon-on-sale :not(:nth-child(5n+1)) {
+  text-align: center;
+}
+
+.pokemon-on-sale a {
+  padding: .4em .8em;
+  background: #5199ff;
+  color: white;
+  font-weight: bold;
+  border-radius: 3px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-on-sale a:hover {
+  background: #61A9FF;
+}
+
+.no-pokemon-available {
+  margin: 40px 0;
+  text-align: center;
+  color: #999;
+  font-size: .8em;
 }
 
 footer {
