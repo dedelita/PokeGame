@@ -11,10 +11,11 @@ main {
 
 header {
   border-bottom: 3px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(255, 255, 255, 0.2) inset;
   background-color: #DD2828;
   background-image: linear-gradient(to bottom, #DD4328, #DD2828 80px);
   color: white;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 header > .wrap {
@@ -28,7 +29,6 @@ header h1 {
   flex: 1 0 auto;
   font: 3em 'Raleway', system-ui, Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 header nav.user {
@@ -63,7 +63,6 @@ header nav.pages a {
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset, 0 -1px 1px rgba(255, 255, 255, 0.1);
   border-bottom: none;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 header nav.pages a:hover {
@@ -74,7 +73,7 @@ main {
   margin: 0 auto 0;
   padding: 40px 20px;
   background: white;
-  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.05), 0 3px 0 rgba(0, 0, 0, 0.05) inset;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1), 0 3px 0 rgba(0, 0, 0, 0.05) inset;
   border-radius: 0 0 3px 3px;
 }
 
@@ -356,4 +355,11 @@ footer {
 
 footer p {
   margin: 3px 0;
+}
+
+footer:after {
+  content: url('img/pika.png');
+  display: block;
+  margin-top: 10px;
+  opacity: 0.3;
 }
