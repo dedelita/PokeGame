@@ -241,9 +241,9 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
 --
 
 INSERT INTO `pokemon` (`id`, `idDresseur`, `idEspece`, `sexe`, `XP`, `niveau`, `prixVente`, `enVente`, `dernierEntrainement`) VALUES
-(6, 1, 4, 'Femelle', 450, 1, 99, 0, NULL),
-(7, 2, 25, 'Femelle', 102, 1, NULL, 0, NULL),
-(8, 3, 7, 'Femelle', 39, 1, NULL, 0, NULL);
+(6, 1, 4, 'Femelle', 0, 1, 99, 0, NULL),
+(7, 2, 25, 'Femelle', 0, 1, NULL, 0, NULL),
+(8, 3, 7, 'Femelle', 0, 1, NULL, 0, NULL);
 
 -- --------------------------------------------------------
 

@@ -177,7 +177,7 @@ function maxXPForCurrentLevel($type, $niveau) {
         $ceilOfCurrentLevel = courbeXP_L($niveau);
     }
 
-    return $ceilOfCurrentLevel;
+    return intval(max(1, $ceilOfCurrentLevel));
 }
 
 function entrainementValide($dernierEntrainement) {
