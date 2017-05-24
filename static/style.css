@@ -327,7 +327,7 @@ body.detail .sell-form input[type="submit"] {
 }
 
 .pokemon-on-sale a {
-  padding: .4em .8em;
+  padding: .4em .8em .3em;
   background: #5199ff;
   color: white;
   font-weight: bold;
@@ -339,6 +339,14 @@ body.detail .sell-form input[type="submit"] {
   background: #61A9FF;
 }
 
+.my.pokemon-on-sale a {
+  background: #DD2828;
+}
+
+.pokemon-on-sale a:hover {
+  background: #ED3838;
+}
+
 .pokemon-on-sale span {
   color: #DD2828;
 }
@@ -348,6 +356,12 @@ body.detail .sell-form input[type="submit"] {
   text-align: center;
   color: #999;
   font-size: .8em;
+}
+
+body.annonces hr {
+  border: none;
+  border-top: 1px solid #BBB;
+  margin-bottom: 30px;
 }
 
 footer {
