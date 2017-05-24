@@ -85,6 +85,18 @@ function getIdDresseur()
     return getDresseur()->getId();
 }
 
+function getNomDresseurById($id)
+{
+    $dbh = connexionSQL();
+
+    $query = "SELECT login FROM user WHERE id = :id";
+    $sql = $dbh->prepare($query);
+    $sql->bindValue(':id', $id);
+    $sql->execute();
+
+    return $sql->fetch()["login"];
+}
+
 function entrainerPokemon()
 {
     entrainer(getFieldFromForm("pokemon"));

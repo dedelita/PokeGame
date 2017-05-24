@@ -17,12 +17,12 @@ $pokemons = getAnnonces();
         <div class="header">Prix</div>
         <?php foreach ($pokemons as $pokemon) { ?>
             <div><?= $pokemon->getNomPokemon()?></div>
-            <div><?= $pokemon->getIdDresseur()?></div>
+            <div><?= getNomDresseurById($pokemon->getIdDresseur()) ?></div>
             <div><?= $pokemon->getNiveau()?></div>
             <div><?=$pokemon->getXP()?></div>
             <div>
                 <a href='index.php?page=annonces&amp;action=acheter&amp;pokemon=<?=$pokemon->getIdPokemon()?>&amp;dresseur=<?=$pokemon->getIdDresseur()?>&amp;prix=<?=$pokemon->getPrix()?>'><?= $pokemon->getPrix()?> <i class="fa fa-fw fa-usd"></i></a>
             </div>
         <?php } ?>
-    </ul>
+    </div>
 <?php } ?>
