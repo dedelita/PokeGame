@@ -48,4 +48,6 @@ function acheterAnnonce($idVendeur, $idPokemon, $prix)
         recevoirPieces($idVendeur, $prix);
         acheterParDresseur($idPokemon, getIdDresseur());
     }
+
+    header("Location:index.php?page=annonces");
 }

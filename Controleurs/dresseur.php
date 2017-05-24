@@ -17,7 +17,7 @@ function inscriptionDresseur()
         $sql->bindValue(':nbPieces', 5000, PDO::PARAM_INT);
         $sql->execute();
 
-        addPokemon($id, getIdEspeceOfPokemon(getFieldFromForm("pokemon")), 0, 0);
+        addPokemon($id, getIdEspeceOfPokemon(getFieldFromForm("pokemon")), 0, 1);
     }
 
     if (!$rep["erreur"])
@@ -109,7 +109,7 @@ function mettreEnVentePokemon($id, $prix)
 
         echo "
             <form class='sell-form' action='' method='post'>
-                <input type='number' name='prix' value='$default' minimum='1'>
+                <input type='number' name='prix' value='$default' min='1' max='2147483647'>
                 <input type='submit' value='Vendre'>
             </form>
         ";

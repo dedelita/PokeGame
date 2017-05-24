@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 23 Mai 2017 à 13:14
+-- Généré le :  Mer 24 Mai 2017 à 15:46
 -- Version du serveur :  5.7.9
 -- Version de PHP :  5.6.15
 
@@ -39,8 +39,17 @@ CREATE TABLE IF NOT EXISTS `dresseur` (
 
 INSERT INTO `dresseur` (`id`, `nbPieces`) VALUES
 (3, 5000),
-(2, 5000),
-(1, 5000);
+(2, 5101),
+(1, 4498),
+(0, 5000),
+(4, 5000),
+(5, 3500),
+(7, 5000),
+(8, 5099),
+(9, 5000),
+(10, 5000),
+(11, 7000),
+(12, 4802);
 
 -- --------------------------------------------------------
 
@@ -229,21 +238,30 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
   `idEspece` int(11) NOT NULL,
   `sexe` varchar(7) NOT NULL,
   `XP` int(11) NOT NULL,
-  `niveau` int(11) NOT NULL,
+  `niveau` int(11) NOT NULL DEFAULT '1',
   `prixVente` int(11) DEFAULT NULL,
   `enVente` tinyint(1) NOT NULL,
   `dernierEntrainement` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `pokemon`
 --
 
 INSERT INTO `pokemon` (`id`, `idDresseur`, `idEspece`, `sexe`, `XP`, `niveau`, `prixVente`, `enVente`, `dernierEntrainement`) VALUES
-(6, 1, 4, 'Femelle', 0, 1, 99, 0, NULL),
-(7, 2, 25, 'Femelle', 0, 1, NULL, 0, NULL),
-(8, 3, 7, 'Femelle', 0, 1, NULL, 0, NULL);
+(6, 2, 4, 'Femelle', 30, 4, 1500, 0, '2017-05-24 15:37:40'),
+(7, 1, 1, 'Femelle', 14, 3, 200, 0, '2017-05-24 15:27:49'),
+(8, 3, 7, 'Femelle', 0, 1, NULL, 0, NULL),
+(9, 0, 7, 'Male', 0, 0, NULL, 0, NULL),
+(10, 4, 7, 'Femelle', 4, 3, NULL, 0, '2017-05-24 13:01:30'),
+(11, 2, 4, 'Male', 5, 3, 200, 0, '2017-05-24 13:15:21'),
+(13, 7, 1, 'Male', 3, 3, NULL, 0, '2017-05-24 15:42:05'),
+(14, 5, 7, 'Femelle', 18, 3, 99, 0, '2017-05-24 15:31:20'),
+(15, 9, 1, 'Femelle', 0, 1, NULL, 0, NULL),
+(16, 10, 1, 'Femelle', 0, 1, NULL, 0, NULL),
+(17, 12, 7, 'Male', 2, 3, 198, 0, '2017-05-24 15:37:02'),
+(18, 12, 1, 'Femelle', 12, 3, 200, 0, '2017-05-24 15:45:06');
 
 -- --------------------------------------------------------
 
@@ -258,7 +276,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` text NOT NULL,
   `password` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `user`
@@ -267,7 +285,15 @@ CREATE TABLE IF NOT EXISTS `user` (
 INSERT INTO `user` (`id`, `login`, `email`, `password`) VALUES
 (1, 'pop', 'pop@pop.fr', '4f197c99a78b8411f1cf48ab409a0a6d176b99b7'),
 (2, 'toto', 'toto@toto.fr', '0b9c2625dc21ef05f6ad4ddf47c5f203837aa32c'),
-(3, 'moi', 'moi@moi.fr', '55cbe7fd00627a28668d1d7c9899bdb602dad69d');
+(3, 'moi', 'moi@moi.fr', '55cbe7fd00627a28668d1d7c9899bdb602dad69d'),
+(4, 'max', 'm@m.fr', '6b0d31c0d563223024da45691584643ac78c96e8'),
+(5, 'coco', 'co@co.fr', '09f836894fc1fe9af6f429fc24dcccc2e6847fe0'),
+(7, 'paul', 'p@a.fr', 'a027184a55211cd23e3f3094f1fdc728df5e0500'),
+(8, 'aze', 'az@az.fr', 'de271790913ea81742b7d31a70d85f50a3d3e5ae'),
+(9, 'qs', 'qs@qs.fr', '1100a5d5740e8ce3ac2f5d5e56d4d2551b7499f0'),
+(10, 'lol', 'lo@lo.fr', '403926033d001b5279df37cbbe5287b7c7c267fa'),
+(11, 'des', 'des@des.fr', 'e9d596e7807a846bc76a51e845fcc844f24dfdaa'),
+(12, 'maya', 'dralili_maya@hotmail.fr', '525f6bb594bd0d03818b9ba8930d4449fa5af9fd');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -2,7 +2,7 @@
 
 function getRandomSexe()
 {
-    return rand(0, 1) ? 'Mâle' : 'Femelle';
+    return intval(rand(0, 2)) ? 'Male' : 'Femelle';
 }
 
 //add
@@ -21,19 +21,6 @@ function addPokemon($idDresseur, $idEspece, $xp, $niveau)
     $sql->bindValue(':enVente', false, PDO::PARAM_BOOL);
     $sql->execute();
 }
-
-////delete
-//function deletePokemonById($id)
-//{
-//    $dbh = connexionSQL();
-//
-//    $p = getMyPokemonById($id);
-//
-//    $query = "DELETE FROM pokemon WHERE id = :id;";
-//    $sql = $dbh->prepare($query);
-//    $sql->bindValue(':id', $id);
-//    $sql->execute();
-//}
 
 //getters & setters
 function getPokemons($id)
@@ -288,4 +275,6 @@ function acheterParDresseur($idPokemon, $idDresseur)
     $sql->bindValue(':idDresseur', $idDresseur, PDO::PARAM_INT);
     $sql->bindValue(':id', $idPokemon, PDO::PARAM_INT);
     $sql->execute();
+
+    $_SESSION["pokemons"] = getPokemons($idDresseur);
 }
